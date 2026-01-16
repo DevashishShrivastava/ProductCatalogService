@@ -1,10 +1,11 @@
 package dev.umang.productcatalogservice.models;
 
+import dev.umang.productcatalogservice.dtos.CategoryDTO;
+import dev.umang.productcatalogservice.dtos.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+
 public class Product extends BaseModel {
     /*
     name                          : String
@@ -20,4 +21,61 @@ public class Product extends BaseModel {
     private String imageUrl;
     private Category category;
 
+    public ProductDTO convert(){
+        ProductDTO productDto = new ProductDTO();
+        productDto.setId(this.getId());
+        productDto.setName(this.getName());
+        productDto.setDescription(this.getDescription());
+        productDto.setPrice(this.getPrice());
+        productDto.setImageUrl(this.getImageUrl());
+        if(this.getCategory() != null) {
+            CategoryDTO categoryDto = new CategoryDTO();
+            categoryDto.setName(this.getCategory().getName());
+            categoryDto.setId(this.getCategory().getId());
+            categoryDto.setDescription(this.getCategory().getDescription());
+            productDto.setCategory(categoryDto);
+        }
+        return productDto;
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

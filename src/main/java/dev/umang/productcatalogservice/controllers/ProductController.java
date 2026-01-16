@@ -1,12 +1,12 @@
 package dev.umang.productcatalogservice.controllers;
 
-import dev.umang.productcatalogservice.dtos.ProductReponseDTO;
-import dev.umang.productcatalogservice.dtos.ProductRequestDTO;
+import dev.umang.productcatalogservice.dtos.ProductDTO;
 import dev.umang.productcatalogservice.models.Product;
+import dev.umang.productcatalogservice.services.FakestoreProductService;
+import dev.umang.productcatalogservice.services.IProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /*
@@ -16,6 +16,16 @@ req2
  */
 @RestController
 public class ProductController {
+    IProductService productService;
+
+    /*
+    Constructor injection
+     */
+
+    public ProductController(IProductService productService){
+        this.productService = productService;
+    }
+
     /*
     1. Create product
     2. Get product by id
@@ -33,11 +43,14 @@ public class ProductController {
      */
 
     @PostMapping("/products")
-    ProductReponseDTO createProduct(@RequestBody ProductRequestDTO product){
-        ProductReponseDTO productReponseDTO = new ProductReponseDTO();
+    ProductDTO createProduct(@RequestBody ProductDTO product){
+
+        ProductDTO productReponseDTO = new ProductDTO();
         /*
         call the service layer to save the product
          */
+
+        //productService.createProduct(product);
         return productReponseDTO;
     }
     /*
@@ -46,12 +59,37 @@ public class ProductController {
 
      */
     @GetMapping("/products/{id}")
-    ProductReponseDTO getProductById(@PathVariable("id") Long id){
-        ProductReponseDTO productReponseDTO = new ProductReponseDTO();
+    ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long id){
+        //RestTemplate
         /*
         call the service layer to get the product by id
          */
-        return productReponseDTO;
+
+        if(id < 1){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+
+        Product product = productService.getProductById(id);
+
+
+        if(product == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
+
+        /*
+        product
+        to productDTO
+
+        obj.from(obj) -> newObj
+         */
+
+        ProductDTO productDTO = product.convert();
+
+        return new ResponseEntity<>(productDTO,HttpStatus.OK);
     }
 
     @GetMapping("/products")
