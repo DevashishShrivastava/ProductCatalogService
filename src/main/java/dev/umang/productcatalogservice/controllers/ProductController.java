@@ -4,6 +4,7 @@ import dev.umang.productcatalogservice.dtos.ProductDTO;
 import dev.umang.productcatalogservice.models.Product;
 import dev.umang.productcatalogservice.services.FakestoreProductService;
 import dev.umang.productcatalogservice.services.IProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,8 @@ public class ProductController {
     Constructor injection
      */
 
-    public ProductController(IProductService productService){
+    public ProductController(@Qualifier("storageProductService") IProductService productService){
+
         this.productService = productService;
     }
 
@@ -76,6 +78,11 @@ public class ProductController {
          */
 
         //productService.createProduct(product);
+
+        Product product1 = productService.createProduct(product.convertToProduct());
+        if(product1 != null){
+            return product1.convert();
+        }
         return productReponseDTO;
     }
     /*
@@ -142,4 +149,13 @@ public class ProductController {
 path variable /id/
 request body { "" : ""
 Query params ?category=electronics
+
+
+2 ways to solve ambiguity
+1. Primary implementation
+2. Qualifer
+ */
+/*
+Primary
+Qualifer
  */

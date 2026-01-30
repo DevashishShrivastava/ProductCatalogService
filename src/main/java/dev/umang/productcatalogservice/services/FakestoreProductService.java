@@ -24,7 +24,7 @@ import static java.util.Objects.nonNull;
 Spring cloud class - more on configurations
 Rest template is a library we are going to use for talking to 3rd party APIs
  */
-@Service
+@Service("fakestore")
 public class FakestoreProductService implements IProductService {
 
     private FakeStoreAPIClient fakeStoreAPIClient;
