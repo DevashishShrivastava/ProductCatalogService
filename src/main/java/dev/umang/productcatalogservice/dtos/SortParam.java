@@ -8,7 +8,7 @@ electronics 250
  */
 public class SortParam {
     private String paramName;
-    private SortType order;
+    private String order;
 
     public String getParamName() {
         return paramName;
@@ -18,13 +18,11 @@ public class SortParam {
         this.paramName = paramName;
     }
 
-    public SortType getOrder() {
+    public String getOrder() {
         return order;
     }
 
-    public void setOrder(SortType order) {
+    public void setOrder(String order) {
         this.order = order;
     }
-
-
 }
